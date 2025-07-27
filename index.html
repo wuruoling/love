@@ -1162,22 +1162,29 @@
         }
         
         // 保存文件到GitHub
-        async function saveGithubFile(filePath, content, message) {
-            // 先检查文件是否存在，获取sha值
-            const getResult = await githubApiRequest(`contents/${filePath}`);
-            
-            const data = {
-                message: message,
-                content: btoa(JSON.stringify(content)) // 编码为base64
-            };
-            
-            // 如果文件存在，需要提供sha值
-            if (getResult.success && getResult.data) {
-                data.sha = getResult.data.sha;
-            }
-            
-            return await githubApiRequest(`contents/${filePath}`, 'PUT', data);
-        }
+async function saveGithubFile(filePath, content, message) {
+    // 先检查文件是否存在，获取sha值
+    const getResult = await githubApiRequest(`contents/${filePath}`);
+    
+    // 处理特殊字符编码问题
+    const encodedData = encodeURIComponent(JSON.stringify(content)).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode(parseInt('0x' + p1, 16));
+    });
+    const base64Data = btoa(encodedData);
+    
+    const data = {
+        message: message,
+        content: base64Data // 使用处理后的base64编码
+    };
+    
+    // 如果文件存在，需要提供sha值
+    if (getResult.success && getResult.data) {
+        data.sha = getResult.data.sha;
+    }
+    
+    return await githubApiRequest(`contents/${filePath}`, 'PUT', data);
+}
+
         
         // 加载照片
         async function loadPhotos() {
