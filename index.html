@@ -759,6 +759,45 @@
     </footer>
 
     <script>
+        // 编码函数 - 将字符串转换为Base64编码的UTF-8格式
+        function encodeString(str) {
+            try {
+                const encoder = new TextEncoder(); // 创建UTF-8编码器
+                const uint8Array = encoder.encode(str); // 将字符串编码为UTF-8的Uint8Array
+                
+                // 将Uint8Array转换为Base64字符串
+                let binaryString = '';
+                uint8Array.forEach(byte => {
+                    binaryString += String.fromCharCode(byte);
+                });
+                return btoa(binaryString);
+            } catch (error) {
+                console.error('编码失败:', error);
+                return '';
+            }
+        }
+
+        // 解码函数 - 将Base64编码的UTF-8字符串还原
+        function decodeString(encodedStr) {
+            try {
+                // 先解码Base64
+                const binaryString = atob(encodedStr);
+                
+                // 转换为Uint8Array
+                const uint8Array = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    uint8Array[i] = binaryString.charCodeAt(i);
+                }
+                
+                // 解码UTF-8
+                const decoder = new TextDecoder('utf-8');
+                return decoder.decode(uint8Array);
+            } catch (error) {
+                console.error('解码失败:', error);
+                return '';
+            }
+        }
+        
         // GitHub 配置信息
         let githubConfig = {
             owner: '',
@@ -916,9 +955,9 @@
         async function saveGithubFile(filePath, content, message) {
             const getResult = await githubApiRequest(`contents/${filePath}`);
             
-            // 使用js-base64库处理JSON数据编码
+            // 使用新的编码方式处理JSON数据
             const jsonString = JSON.stringify(content);
-            const base64Data = window.Base64.encode(jsonString);
+            const base64Data = encodeString(jsonString);
             
             const data = {
                 message: message,
@@ -954,20 +993,9 @@
 
             // 逐个解码并渲染留言
             messages.forEach(message => {
-                // 解码姓名（使用UTF-8）
-                let decodedAuthor = message.author;
-                try {
-                    // 尝试使用UTF-8解码
-                    const authorBytes = new Uint8Array(atob(message.author).split('').map(c => c.charCodeAt(0)));
-                    decodedAuthor = new TextDecoder('utf-8').decode(authorBytes);
-                } catch (e) {
-                    // 如果解码失败，使用原始值
-                    console.log('使用原始姓名值:', e);
-                }
-                
-                // 解码内容
-                const decoder = new TextDecoder('utf-8');
-                const decodedContent = decoder.decode(Uint8Array.from(atob(message.content), c => c.charCodeAt(0)));
+                // 使用新的解码函数解码姓名和内容
+                const decodedAuthor = decodeString(message.author);
+                const decodedContent = decodeString(message.content);
                 
                 const messageElement = document.createElement('div');
                 messageElement.className = 'message';
@@ -986,14 +1014,9 @@
         
         // 保存留言
         async function saveMessage(author, content) {
-            // 使用UTF-8编码处理中文
-            const encoder = new TextEncoder();
-            
-            // 编码姓名
-            const encodedAuthor = btoa(String.fromCharCode(...encoder.encode(author)));
-            
-            // 编码内容
-            const encodedContent = btoa(String.fromCharCode(...encoder.encode(content)));
+            // 使用新的编码函数编码姓名和内容
+            const encodedAuthor = encodeString(author);
+            const encodedContent = encodeString(content);
 
             // 获取现有留言数据
             const result = await getGithubFileContent('messages.json');
