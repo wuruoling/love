@@ -213,6 +213,124 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23e8c4c4" stroke-width="0.5" stroke-dasharray="5,5" opacity="0.2"/></svg>');
         }
         
+        .gallery-controls {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .upload-btn i {
+            margin-right: 10px;
+        }
+        
+        .upload-btn:hover {
+            background: #a05a65;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(183, 110, 121, 0.3);
+        }
+        
+        .upload-info {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .upload-container {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .upload-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .photo-form-group {
+            margin-bottom: 25px;
+        }
+        
+        .photo-form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-button {
+            background: #f1e9e5;
+            color: var(--dark);
+            border: 1px solid var(--secondary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            display: inline-block;
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            min-height: 150px;
+            border: 2px dashed var(--secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: var(--transition);
+        }
+        
+        .preview-container.has-image {
+            border-style: solid;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            display: none;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .preview-image.show {
+            display: block;
+        }
+        
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -260,6 +378,34 @@
         
         .gallery-item:hover .gallery-caption {
             transform: translateY(0);
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #e74c3c;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 5;
+        }
+        
+        .gallery-item:hover .delete-btn {
+            opacity: 1;
+        }
+        
+        .delete-btn:hover {
+            background: white;
+            transform: scale(1.1);
         }
         
         /* 誓言样式 */
@@ -750,7 +896,7 @@
     <!-- 头部 -->
     <header class="hero">
         <div class="hero-content">
-            <h1 class="couple-names">张伟 & 李娜</h1>
+            <h1 class="couple-names">曹江南 & 周可芹</h1>
             <p class="hero-subtitle">永恒的爱 · 从此刻开始</p>
             <p class="hero-date">2023年10月15日 · 上海</p>
         </div>
@@ -762,7 +908,7 @@
     <!-- 导航 -->
     <nav>
         <div class="nav-container">
-            <a href="#" class="logo">张伟 & 李娜</a>
+            <a href="#" class="logo">曹江南 & 周可芹</a>
             <ul class="nav-links">
                 <li><a href="#gallery">幸福相册</a></li>
                 <li><a href="#vows">爱的誓言</a></li>
@@ -775,28 +921,72 @@
     <section id="gallery" class="section gallery-section">
         <div class="container">
             <h2 class="section-title">幸福时刻</h2>
-            <div class="gallery">
+            
+            <!-- 上传控制区 -->
+            <div class="gallery-controls">
+                <button class="upload-btn" id="toggle-upload">
+                    <i class="fas fa-plus"></i> 上传照片
+                </button>
+                <p class="upload-info">上传你们的珍贵回忆，分享幸福瞬间</p>
+                
+                <!-- 上传表单 -->
+                <div class="upload-container" id="upload-container">
+                    <form id="photo-upload-form">
+                        <div class="photo-form-group">
+                            <label for="photo-file">选择照片</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="photo-file" accept="image/*" required>
+                                <span class="file-input-button"><i class="fas fa-image"></i> 选择图片文件</span>
+                            </div>
+                            
+                            <!-- 预览区域 -->
+                            <div class="preview-container" id="preview-container">
+                                <img src="" alt="预览图" class="preview-image" id="preview-image">
+                                <span id="preview-placeholder">上传图片后将显示预览</span>
+                            </div>
+                        </div>
+                        
+                        <div class="photo-form-group">
+                            <label for="photo-caption">照片描述</label>
+                            <input type="text" id="photo-caption" class="form-control" placeholder="例如：婚礼现场的美好瞬间" required>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-save"></i> 保存照片
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 相册图片区 -->
+            <div class="gallery" id="gallery-container">
                 <div class="gallery-item">
+                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
                     <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="求婚时刻" class="gallery-img">
                     <div class="gallery-caption">月光下的求婚</div>
                 </div>
                 <div class="gallery-item">
+                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
                     <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="婚礼仪式" class="gallery-img">
                     <div class="gallery-caption">神圣的誓言</div>
                 </div>
                 <div class="gallery-item">
+                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
                     <img src="https://images.unsplash.com/photo-1519657337289-077653f724ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="婚礼之吻" class="gallery-img">
                     <div class="gallery-caption">爱的印记</div>
                 </div>
                 <div class="gallery-item">
+                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
                     <img src="https://images.unsplash.com/photo-1532710093739-9470acff878f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="婚礼派对" class="gallery-img">
                     <div class="gallery-caption">欢乐庆典</div>
                 </div>
                 <div class="gallery-item">
+                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
                     <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="美丽新娘" class="gallery-img">
                     <div class="gallery-caption">最美的你</div>
                 </div>
                 <div class="gallery-item">
+                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
                     <img src="https://images.unsplash.com/photo-1519657337289-077653f724ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="帅气新郎" class="gallery-img">
                     <div class="gallery-caption">最爱的你</div>
                 </div>
@@ -812,19 +1002,19 @@
                 <div class="bride-vow">
                     <h3 style="color:var(--primary); margin-bottom:30px; font-family:'Playfair Display';">新娘誓言</h3>
                     <p class="vow">
-                        伟，从遇见你的那天起，我的生活被赋予了新的意义。我承诺在阳光灿烂的日子里陪你欢笑，在风雨来临时紧握你的手。
+                        江南，从遇见你的那天起，我的生活被赋予了新的意义。我承诺在阳光灿烂的日子里陪你欢笑，在风雨来临时紧握你的手。
                         我会尊重你独立的思想，珍惜我们共同的梦想。无论健康疾病，贫穷富有，我都会爱你如初，直到永远。
                     </p>
-                    <p class="vow-signature">—— 你的娜</p>
+                    <p class="vow-signature">—— 你的可芹</p>
                 </div>
                 
                 <div class="groom-vow" style="margin-top:60px;">
                     <h3 style="color:var(--primary); margin-bottom:30px; font-family:'Playfair Display';">新郎誓言</h3>
                     <p class="vow">
-                        娜，你是我生命中最美的奇迹。我承诺做你最坚实的依靠，最温暖的港湾。我会每天逗你笑，陪你探索世界，
+                        可芹，你是我生命中最美的奇迹。我承诺做你最坚实的依靠，最温暖的港湾。我会每天逗你笑，陪你探索世界，
                         记住你喜欢的每件小事。无论顺境逆境，青春暮年，我会用一生证明：选择你，是我做过最正确的决定。
                     </p>
-                    <p class="vow-signature">—— 爱你的伟</p>
+                    <p class="vow-signature">—— 爱你的江南</p>
                 </div>
             </div>
         </div>
@@ -861,7 +1051,7 @@
                         <span class="message-date">2023年10月15日</span>
                     </div>
                     <div class="message-content">
-                        <p>娜娜今天太美了！看到伟哥看你的眼神，就知道你嫁给了爱情。要永远幸福哦！</p>
+                        <p>可芹今天太美了！看到江南看你的眼神，就知道你嫁给了爱情。要永远幸福哦！</p>
                     </div>
                 </div>
                 
@@ -871,7 +1061,7 @@
                         <span class="message-date">2023年10月15日</span>
                     </div>
                     <div class="message-content">
-                        <p>伟子终于有人收了你！好好对嫂子，不然我们兄弟团第一个不答应！新婚快乐！</p>
+                        <p>江南终于有人收了你！好好对可芹，不然我们兄弟团第一个不答应！新婚快乐！</p>
                     </div>
                 </div>
             </div>
@@ -913,7 +1103,7 @@
     <footer>
         <div class="container">
             <div class="footer-love">❤</div>
-            <div class="footer-names">张伟 & 李娜</div>
+            <div class="footer-names">曹江南 & 周可芹</div>
             <p class="footer-quote">"爱不是彼此凝视，而是一起朝同一个方向看"</p>
             <p>永恒的爱情纪念册 · 2023年10月15日</p>
             <p class="copyright">© 2023 爱的永恒纪念册 | 设计制作: 家人献礼</p>
@@ -949,10 +1139,147 @@
                 }
             });
             
+            // 照片上传功能
+            const toggleUploadBtn = document.getElementById('toggle-upload');
+            const uploadContainer = document.getElementById('upload-container');
+            const photoFileInput = document.getElementById('photo-file');
+            const previewImage = document.getElementById('preview-image');
+            const previewContainer = document.getElementById('preview-container');
+            const previewPlaceholder = document.getElementById('preview-placeholder');
+            const photoUploadForm = document.getElementById('photo-upload-form');
+            const galleryContainer = document.getElementById('gallery-container');
+            
+            // 切换上传表单显示/隐藏
+            toggleUploadBtn.addEventListener('click', function() {
+                uploadContainer.classList.toggle('active');
+                if (uploadContainer.classList.contains('active')) {
+                    toggleUploadBtn.innerHTML = '<i class="fas fa-times"></i> 取消上传';
+                    toggleUploadBtn.style.background = '#e74c3c';
+                } else {
+                    toggleUploadBtn.innerHTML = '<i class="fas fa-plus"></i> 上传照片';
+                    toggleUploadBtn.style.background = '';
+                    // 重置表单
+                    photoUploadForm.reset();
+                    previewImage.classList.remove('show');
+                    previewImage.src = '';
+                    previewContainer.classList.remove('has-image');
+                    previewPlaceholder.style.display = 'block';
+                }
+            });
+            
+            // 图片预览
+            photoFileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewImage.src = event.target.result;
+                        previewImage.classList.add('show');
+                        previewContainer.classList.add('has-image');
+                        previewPlaceholder.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 提交上传表单
+            photoUploadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const caption = document.getElementById('photo-caption').value;
+                const imageSrc = previewImage.src;
+                
+                if (imageSrc && caption) {
+                    // 创建新的相册项
+                    const newGalleryItem = document.createElement('div');
+                    newGalleryItem.className = 'gallery-item';
+                    newGalleryItem.innerHTML = `
+                        <button class="delete-btn" data-type="user"><i class="fas fa-trash-alt"></i></button>
+                        <img src="${imageSrc}" alt="${caption}" class="gallery-img">
+                        <div class="gallery-caption">${caption}</div>
+                    `;
+                    
+                    // 添加到相册开头
+                    galleryContainer.insertBefore(newGalleryItem, galleryContainer.firstChild);
+                    
+                    // 重置表单
+                    photoUploadForm.reset();
+                    previewImage.classList.remove('show');
+                    previewImage.src = '';
+                    previewContainer.classList.remove('has-image');
+                    previewPlaceholder.style.display = 'block';
+                    uploadContainer.classList.remove('active');
+                    toggleUploadBtn.innerHTML = '<i class="fas fa-plus"></i> 上传照片';
+                    toggleUploadBtn.style.background = '';
+                    
+                    // 添加删除事件
+                    attachDeleteEvent(newGalleryItem.querySelector('.delete-btn'));
+                    
+                    // 宠物反馈
+                    showPetMessage("哇~新照片真漂亮！");
+                }
+            });
+            
+            // 删除照片功能
+            function attachDeleteEvent(deleteBtn) {
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止触发相册项的点击事件
+                    
+                    const galleryItem = this.closest('.gallery-item');
+                    const itemType = this.getAttribute('data-type');
+                    
+                    // 对于默认图片，显示确认提示
+                    if (itemType === 'default') {
+                        if (confirm('确定要删除这张默认照片吗？')) {
+                            galleryItem.style.transform = 'scale(0)';
+                            galleryItem.style.opacity = '0';
+                            setTimeout(() => {
+                                galleryItem.remove();
+                                showPetMessage("照片已删除~");
+                            }, 300);
+                        }
+                    } else {
+                        // 对于用户上传的图片，直接删除
+                        galleryItem.style.transform = 'scale(0)';
+                        galleryItem.style.opacity = '0';
+                        setTimeout(() => {
+                            galleryItem.remove();
+                            showPetMessage("照片已删除~");
+                        }, 300);
+                    }
+                });
+            }
+            
+            // 为现有删除按钮添加事件
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                attachDeleteEvent(btn);
+            });
+            
             // 互动宠物功能
             const petContainer = document.getElementById('pet-container');
             const petSpeech = document.getElementById('pet-speech');
             const petHeart = document.getElementById('pet-heart');
+            
+            // 显示宠物消息
+            function showPetMessage(message) {
+                petSpeech.textContent = message;
+                petSpeech.classList.add('show');
+                
+                petContainer.style.animation = 'jump 0.5s ease';
+                petHeart.style.opacity = '1';
+                petHeart.style.animation = 'float 1s ease';
+                
+                setTimeout(() => {
+                    petContainer.style.animation = '';
+                    petHeart.style.opacity = '0';
+                    petHeart.style.animation = '';
+                    
+                    // 3秒后隐藏消息
+                    setTimeout(() => {
+                        petSpeech.classList.remove('show');
+                    }, 3000);
+                }, 1000);
+            }
             
             // 初始显示说话气泡
             setTimeout(() => {
@@ -982,7 +1309,8 @@
                     "爱情永恒，幸福美满！",
                     "喵~要永远相爱哦！",
                     "祝福你们天长地久！",
-                    "愿爱洋溢在你们甜蜜的生活中！"
+                    "愿爱洋溢在你们甜蜜的生活中！",
+                    "上传照片记录美好瞬间吧！"
                 ];
                 
                 const randomMsg = messages[Math.floor(Math.random() * messages.length)];
@@ -1074,23 +1402,7 @@
                 messageInput.value = '';
                 
                 // 宠物反馈
-                petSpeech.textContent = "喵~收到新祝福啦！";
-                petSpeech.classList.add('show');
-                
-                petContainer.style.animation = 'jump 0.5s ease';
-                petHeart.style.opacity = '1';
-                petHeart.style.animation = 'float 1s ease';
-                
-                setTimeout(() => {
-                    petContainer.style.animation = '';
-                    petHeart.style.opacity = '0';
-                    petHeart.style.animation = '';
-                    
-                    // 5秒后恢复初始消息
-                    setTimeout(() => {
-                        petSpeech.textContent = "喵~新婚快乐！点击我有惊喜哦~";
-                    }, 5000);
-                }, 1000);
+                showPetMessage("喵~收到新祝福啦！");
             });
         });
     </script>
