@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-base64/3.7.6/base64.min.js"></script>
@@ -953,14 +954,26 @@
 
             // 逐个解码并渲染留言
             messages.forEach(message => {
+                // 解码姓名（使用UTF-8）
+                let decodedAuthor = message.author;
+                try {
+                    // 尝试使用UTF-8解码
+                    const authorBytes = new Uint8Array(atob(message.author).split('').map(c => c.charCodeAt(0)));
+                    decodedAuthor = new TextDecoder('utf-8').decode(authorBytes);
+                } catch (e) {
+                    // 如果解码失败，使用原始值
+                    console.log('使用原始姓名值:', e);
+                }
+                
+                // 解码内容
                 const decoder = new TextDecoder('utf-8');
-                const decodedContent = decoder.decode(window.atob(message.content));
+                const decodedContent = decoder.decode(Uint8Array.from(atob(message.content), c => c.charCodeAt(0)));
                 
                 const messageElement = document.createElement('div');
                 messageElement.className = 'message';
                 messageElement.innerHTML = `
                     <div class="message-header">
-                        <span class="message-author"><i class="fas fa-user"></i> ${message.author}</span>
+                        <span class="message-author"><i class="fas fa-user"></i> ${decodedAuthor}</span>
                         <span class="message-date">${message.date}</span>
                     </div>
                     <div class="message-content">
@@ -973,9 +986,14 @@
         
         // 保存留言
         async function saveMessage(author, content) {
-            // 编码时用 UTF-8 统一处理
+            // 使用UTF-8编码处理中文
             const encoder = new TextEncoder();
-            const encodedContent = window.btoa(String.fromCharCode(...encoder.encode(content)));
+            
+            // 编码姓名
+            const encodedAuthor = btoa(String.fromCharCode(...encoder.encode(author)));
+            
+            // 编码内容
+            const encodedContent = btoa(String.fromCharCode(...encoder.encode(content)));
 
             // 获取现有留言数据
             const result = await getGithubFileContent('messages.json');
@@ -988,7 +1006,7 @@
             const messages = result.content || [];
             const newMessage = {
                 id: Date.now(),
-                author: author,
+                author: encodedAuthor,  // 存储编码后的姓名
                 date: new Date().toLocaleDateString(),
                 content: encodedContent
             };
