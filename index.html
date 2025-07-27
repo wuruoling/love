@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-base64/3.7.6/base64.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>爱的永恒 | 婚礼纪念册</title>
@@ -1163,28 +1164,25 @@
         
         // 保存文件到GitHub
 async function saveGithubFile(filePath, content, message) {
-    // 先检查文件是否存在，获取sha值
     const getResult = await githubApiRequest(`contents/${filePath}`);
     
-    // 处理特殊字符编码问题
-    const encodedData = encodeURIComponent(JSON.stringify(content)).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-        return String.fromCharCode(parseInt('0x' + p1, 16));
-    });
-    const base64Data = btoa(encodedData);
+    // 使用js-base64库处理JSON数据编码
+    const jsonString = JSON.stringify(content);
+    const base64Data = window.Base64.encode(jsonString);
     
     const data = {
         message: message,
-        content: base64Data // 使用处理后的base64编码
+        content: base64Data
     };
     
-    // 如果文件存在，需要提供sha值
+    // 如果文件已存在，需要提供sha值
     if (getResult.success && getResult.data) {
         data.sha = getResult.data.sha;
     }
     
     return await githubApiRequest(`contents/${filePath}`, 'PUT', data);
 }
-
+    
         
         // 加载照片
         async function loadPhotos() {
@@ -1264,38 +1262,52 @@ async function saveGithubFile(filePath, content, message) {
         
         // 保存照片
         async function savePhoto(src, caption) {
-            const result = await getGithubFileContent('photos.json');
-            
-            if (!result.success) {
-                showPetMessage(`保存失败: ${result.error}`);
-                return false;
-            }
-            
-            const photos = result.content || [];
-            const newPhoto = {
-                id: Date.now(),
-                src: src,
-                caption: caption,
-                date: new Date().toLocaleDateString()
-            };
-            
-            photos.unshift(newPhoto);
-            
-            const saveResult = await saveGithubFile(
-                'photos.json',
-                photos,
-                `添加新照片: ${caption}`
-            );
-            
-            if (saveResult.success) {
-                loadPhotos();
-                return true;
-            } else {
-                showPetMessage(`保存失败: ${saveResult.error}`);
-                return false;
-            }
-        }
+    try {
+        // 提取图片的Base64数据（去除前缀部分）
+        const base64Data = src.split(',')[1];
         
+        // 使用js-base64库处理编码，支持所有字符
+        const safeBase64 = window.Base64.encode(base64Data);
+        
+        // 获取现有照片数据
+        const result = await getGithubFileContent('photos.json');
+        if (!result.success) {
+            showPetMessage(`保存失败: ${result.error}`);
+            return false;
+        }
+
+        // 创建新照片对象
+        const photos = result.content || [];
+        const newPhoto = {
+            id: Date.now(),
+            src: `data:image/jpeg;base64,${safeBase64}`, // 使用处理后的编码
+            caption: caption,
+            date: new Date().toLocaleDateString()
+        };
+
+        // 添加到数组并保存
+        photos.unshift(newPhoto);
+
+        const saveResult = await saveGithubFile(
+            'photos.json',
+            photos,
+            `添加新照片: ${caption}`
+        );
+
+        if (saveResult.success) {
+            loadPhotos();
+            showPetMessage("照片上传成功！");
+            return true;
+        } else {
+            showPetMessage(`保存失败: ${saveResult.error}`);
+            return false;
+        }
+    } catch (error) {
+        console.error('照片处理失败:', error);
+        showPetMessage(`上传失败: 图片编码错误`);
+        return false;
+    }
+}
         // 保存留言
         async function saveMessage(author, content) {
             const result = await getGithubFileContent('messages.json');
