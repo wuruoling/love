@@ -902,36 +902,7 @@
             
             <!-- 相册图片区 -->
             <div class="gallery" id="gallery-container">
-                <div class="gallery-item">
-                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
-                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="求婚时刻" class="gallery-img">
-                    <div class="gallery-caption">月光下的求婚</div>
-                </div>
-                <div class="gallery-item">
-                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
-                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="婚礼仪式" class="gallery-img">
-                    <div class="gallery-caption">神圣的誓言</div>
-                </div>
-                <div class="gallery-item">
-                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
-                    <img src="https://images.unsplash.com/photo-1519657337289-077653f724ed?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="婚礼之吻" class="gallery-img">
-                    <div class="gallery-caption">爱的印记</div>
-                </div>
-                <div class="gallery-item">
-                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
-                    <img src="https://images.unsplash.com/photo-1532710093739-9470acff878f?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="婚礼派对" class="gallery-img">
-                    <div class="gallery-caption">欢乐庆典</div>
-                </div>
-                <div class="gallery-item">
-                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
-                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="美丽新娘" class="gallery-img">
-                    <div class="gallery-caption">最美的你</div>
-                </div>
-                <div class="gallery-item">
-                    <button class="delete-btn" data-type="default"><i class="fas fa-trash-alt"></i></button>
-                    <img src="https://images.unsplash.com/photo-1519657337289-077653f724ed?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="帅气新郎" class="gallery-img">
-                    <div class="gallery-caption">最爱的你</div>
-                </div>
+                <!-- 图片将通过JavaScript动态加载 -->
             </div>
         </div>
     </section>
@@ -940,46 +911,8 @@
     <section id="guestbook" class="section guestbook-section">
         <div class="container">
             <h2 class="section-title">亲友祝福</h2>
-            <div class="guestbook">
-                <div class="message">
-                    <div class="message-header">
-                        <span class="message-author"><i class="fas fa-user"></i> 王阿姨</span>
-                        <span class="message-date">2023年10月16日</span>
-                    </div>
-                    <div class="message-content">
-                        <p>看着你们从青涩少年到步入婚姻，感动又欣慰！愿你们相濡以沫，白首不离！</p>
-                    </div>
-                </div>
-                
-                <div class="message">
-                    <div class="message-header">
-                        <span class="message-author"><i class="fas fa-user"></i> 李叔叔</span>
-                        <span class="message-date">2023年10月16日</span>
-                    </div>
-                    <div class="message-content">
-                        <p>婚姻需要经营，记得多包容体谅。祝你们永结同心，早生贵子！</p>
-                    </div>
-                </div>
-                
-                <div class="message">
-                    <div class="message-header">
-                        <span class="message-author"><i class="fas fa-user"></i> 闺蜜小雅</span>
-                        <span class="message-date">2023年10月15日</span>
-                    </div>
-                    <div class="message-content">
-                        <p>可芹今天太美了！看到江南看你的眼神，就知道你嫁给了爱情。要永远幸福哦！</p>
-                    </div>
-                </div>
-                
-                <div class="message">
-                    <div class="message-header">
-                        <span class="message-author"><i class="fas fa-user"></i> 兄弟大伟</span>
-                        <span class="message-date">2023年10月15日</span>
-                    </div>
-                    <div class="message-content">
-                        <p>江南终于有人收了你！好好对可芹，不然我们兄弟团第一个不答应！新婚快乐！</p>
-                    </div>
-                </div>
+            <div class="guestbook" id="guestbook-container">
+                <!-- 留言将通过JavaScript动态加载 -->
             </div>
             
             <!-- 添加留言表单 -->
@@ -1027,8 +960,188 @@
     </footer>
 
     <script>
+        // 初始化本地存储
+        function initLocalStorage() {
+            // 如果没有照片数据，初始化默认照片
+            if (!localStorage.getItem('weddingPhotos')) {
+                const defaultPhotos = [
+                    {
+                        id: 1,
+                        src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80',
+                        caption: '月光下的求婚',
+                        type: 'default'
+                    },
+                    {
+                        id: 2,
+                        src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80',
+                        caption: '神圣的誓言',
+                        type: 'default'
+                    },
+                    {
+                        id: 3,
+                        src: 'https://images.unsplash.com/photo-1519657337289-077653f724ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80',
+                        caption: '爱的印记',
+                        type: 'default'
+                    },
+                    {
+                        id: 4,
+                        src: 'https://images.unsplash.com/photo-1532710093739-9470acff878f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80',
+                        caption: '欢乐庆典',
+                        type: 'default'
+                    },
+                    {
+                        id: 5,
+                        src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80',
+                        caption: '最美的你',
+                        type: 'default'
+                    },
+                    {
+                        id: 6,
+                        src: 'https://images.unsplash.com/photo-1519657337289-077653f724ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80',
+                        caption: '最爱的你',
+                        type: 'default'
+                    }
+                ];
+                localStorage.setItem('weddingPhotos', JSON.stringify(defaultPhotos));
+            }
+            
+            // 如果没有留言数据，初始化默认留言
+            if (!localStorage.getItem('weddingMessages')) {
+                const defaultMessages = [
+                    {
+                        id: 1,
+                        author: '王阿姨',
+                        date: '2023年10月16日',
+                        content: '看着你们从青涩少年到步入婚姻，感动又欣慰！愿你们相濡以沫，白首不离！'
+                    },
+                    {
+                        id: 2,
+                        author: '李叔叔',
+                        date: '2023年10月16日',
+                        content: '婚姻需要经营，记得多包容体谅。祝你们永结同心，早生贵子！'
+                    },
+                    {
+                        id: 3,
+                        author: '闺蜜小雅',
+                        date: '2023年10月15日',
+                        content: '可芹今天太美了！看到江南看你的眼神，就知道你嫁给了爱情。要永远幸福哦！'
+                    },
+                    {
+                        id: 4,
+                        author: '兄弟大伟',
+                        date: '2023年10月15日',
+                        content: '江南终于有人收了你！好好对可芹，不然我们兄弟团第一个不答应！新婚快乐！'
+                    }
+                ];
+                localStorage.setItem('weddingMessages', JSON.stringify(defaultMessages));
+            }
+        }
+        
+        // 从本地存储加载照片
+        function loadPhotosFromStorage() {
+            const galleryContainer = document.getElementById('gallery-container');
+            const photos = JSON.parse(localStorage.getItem('weddingPhotos') || '[]');
+            
+            galleryContainer.innerHTML = '';
+            
+            photos.forEach(photo => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <button class="delete-btn" data-type="${photo.type}" data-id="${photo.id}"><i class="fas fa-trash-alt"></i></button>
+                    <img src="${photo.src}" alt="${photo.caption}" class="gallery-img">
+                    <div class="gallery-caption">${photo.caption}</div>
+                `;
+                
+                galleryContainer.appendChild(galleryItem);
+                attachDeleteEvent(galleryItem.querySelector('.delete-btn'));
+            });
+        }
+        
+        // 从本地存储加载留言
+        function loadMessagesFromStorage() {
+            const guestbookContainer = document.getElementById('guestbook-container');
+            const messages = JSON.parse(localStorage.getItem('weddingMessages') || '[]');
+            
+            guestbookContainer.innerHTML = '';
+            
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message';
+                messageElement.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-author"><i class="fas fa-user"></i> ${message.author}</span>
+                        <span class="message-date">${message.date}</span>
+                    </div>
+                    <div class="message-content">
+                        <p>${message.content}</p>
+                    </div>
+                `;
+                
+                guestbookContainer.appendChild(messageElement);
+            });
+        }
+        
+        // 保存照片到本地存储
+        function savePhotoToStorage(src, caption) {
+            const photos = JSON.parse(localStorage.getItem('weddingPhotos') || '[]');
+            const newId = Date.now(); // 使用时间戳作为唯一ID
+            
+            const newPhoto = {
+                id: newId,
+                src: src,
+                caption: caption,
+                type: 'user'
+            };
+            
+            // 添加到数组开头
+            photos.unshift(newPhoto);
+            localStorage.setItem('weddingPhotos', JSON.stringify(photos));
+            
+            // 重新加载照片
+            loadPhotosFromStorage();
+        }
+        
+        // 保存留言到本地存储
+        function saveMessageToStorage(author, content) {
+            const messages = JSON.parse(localStorage.getItem('weddingMessages') || '[]');
+            const newId = Date.now(); // 使用时间戳作为唯一ID
+            const date = new Date().toLocaleDateString();
+            
+            const newMessage = {
+                id: newId,
+                author: author,
+                date: date,
+                content: content
+            };
+            
+            // 添加到数组开头
+            messages.unshift(newMessage);
+            localStorage.setItem('weddingMessages', JSON.stringify(messages));
+            
+            // 重新加载留言
+            loadMessagesFromStorage();
+        }
+        
+        // 从本地存储删除照片
+        function deletePhotoFromStorage(photoId) {
+            let photos = JSON.parse(localStorage.getItem('weddingPhotos') || '[]');
+            photos = photos.filter(photo => photo.id !== parseInt(photoId));
+            localStorage.setItem('weddingPhotos', JSON.stringify(photos));
+            
+            // 重新加载照片
+            loadPhotosFromStorage();
+        }
+        
         // 滚动动画效果
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化本地存储
+            initLocalStorage();
+            
+            // 加载数据
+            loadPhotosFromStorage();
+            loadMessagesFromStorage();
+            
             // 平滑滚动导航
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
@@ -1063,7 +1176,6 @@
             const previewContainer = document.getElementById('preview-container');
             const previewPlaceholder = document.getElementById('preview-placeholder');
             const photoUploadForm = document.getElementById('photo-upload-form');
-            const galleryContainer = document.getElementById('gallery-container');
             
             // 切换上传表单显示/隐藏
             toggleUploadBtn.addEventListener('click', function() {
@@ -1106,17 +1218,8 @@
                 const imageSrc = previewImage.src;
                 
                 if (imageSrc && caption) {
-                    // 创建新的相册项
-                    const newGalleryItem = document.createElement('div');
-                    newGalleryItem.className = 'gallery-item';
-                    newGalleryItem.innerHTML = `
-                        <button class="delete-btn" data-type="user"><i class="fas fa-trash-alt"></i></button>
-                        <img src="${imageSrc}" alt="${caption}" class="gallery-img">
-                        <div class="gallery-caption">${caption}</div>
-                    `;
-                    
-                    // 添加到相册开头
-                    galleryContainer.insertBefore(newGalleryItem, galleryContainer.firstChild);
+                    // 保存到本地存储
+                    savePhotoToStorage(imageSrc, caption);
                     
                     // 重置表单
                     photoUploadForm.reset();
@@ -1127,9 +1230,6 @@
                     uploadContainer.classList.remove('active');
                     toggleUploadBtn.innerHTML = '<i class="fas fa-plus"></i> 上传照片';
                     toggleUploadBtn.style.background = '';
-                    
-                    // 添加删除事件
-                    attachDeleteEvent(newGalleryItem.querySelector('.delete-btn'));
                     
                     // 宠物反馈
                     showPetMessage("哇~新照片真漂亮！");
@@ -1143,6 +1243,7 @@
                     
                     const galleryItem = this.closest('.gallery-item');
                     const itemType = this.getAttribute('data-type');
+                    const photoId = this.getAttribute('data-id');
                     
                     // 对于默认图片，显示确认提示
                     if (itemType === 'default') {
@@ -1150,7 +1251,7 @@
                             galleryItem.style.transform = 'scale(0)';
                             galleryItem.style.opacity = '0';
                             setTimeout(() => {
-                                galleryItem.remove();
+                                deletePhotoFromStorage(photoId);
                                 showPetMessage("照片已删除~");
                             }, 300);
                         }
@@ -1159,17 +1260,12 @@
                         galleryItem.style.transform = 'scale(0)';
                         galleryItem.style.opacity = '0';
                         setTimeout(() => {
-                            galleryItem.remove();
+                            deletePhotoFromStorage(photoId);
                             showPetMessage("照片已删除~");
                         }, 300);
                     }
                 });
             }
-            
-            // 为现有删除按钮添加事件
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                attachDeleteEvent(btn);
-            });
             
             // 互动宠物功能
             const petContainer = document.getElementById('pet-container');
@@ -1296,29 +1392,17 @@
                 const nameInput = this.querySelector('input[type="text"]');
                 const messageInput = this.querySelector('textarea');
                 
-                // 创建新的留言
-                const newMessage = document.createElement('div');
-                newMessage.className = 'message';
-                newMessage.innerHTML = `
-                    <div class="message-header">
-                        <span class="message-author"><i class="fas fa-user"></i> ${nameInput.value}</span>
-                        <span class="message-date">${new Date().toLocaleDateString()}</span>
-                    </div>
-                    <div class="message-content">
-                        <p>${messageInput.value}</p>
-                    </div>
-                `;
-                
-                // 添加到留言区顶部
-                const guestbook = document.querySelector('.guestbook');
-                guestbook.insertBefore(newMessage, guestbook.firstChild);
-                
-                // 清空表单
-                nameInput.value = '';
-                messageInput.value = '';
-                
-                // 宠物反馈
-                showPetMessage("喵~收到新祝福啦！");
+                if (nameInput.value && messageInput.value) {
+                    // 保存到本地存储
+                    saveMessageToStorage(nameInput.value, messageInput.value);
+                    
+                    // 清空表单
+                    nameInput.value = '';
+                    messageInput.value = '';
+                    
+                    // 宠物反馈
+                    showPetMessage("喵~收到新祝福啦！");
+                }
             });
         });
     </script>
