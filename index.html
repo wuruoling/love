@@ -1309,38 +1309,41 @@ async function saveGithubFile(filePath, content, message) {
     }
 }
         // 保存留言
-        async function saveMessage(author, content) {
-            const result = await getGithubFileContent('messages.json');
-            
-            if (!result.success) {
-                showPetMessage(`保存失败: ${result.error}`);
-                return false;
-            }
-            
-            const messages = result.content || [];
-            const newMessage = {
-                id: Date.now(),
-                author: author,
-                date: new Date().toLocaleDateString(),
-                content: content
-            };
-            
-            messages.unshift(newMessage);
-            
-            const saveResult = await saveGithubFile(
-                'messages.json',
-                messages,
-                `添加新留言: ${author}`
-            );
-            
-            if (saveResult.success) {
-                loadMessages();
-                return true;
-            } else {
-                showPetMessage(`保存失败: ${saveResult.error}`);
-                return false;
-            }
-        }
+      async function saveMessage(author, content) {
+    // 获取现有留言数据
+    const result = await getGithubFileContent('messages.json');
+    if (!result.success) {
+        showPetMessage(`保存失败: ${result.error}`);
+        return false;
+    }
+
+    // 修正数据结构：和前端显示的字段对齐
+    const messages = result.content || [];
+    const newMessage = {
+        id: Date.now(),
+        author: author,       // 对应前端的 name
+        date: new Date().toLocaleDateString(),
+        content: content      // 对应前端的 message
+    };
+
+    messages.unshift(newMessage);
+
+    // 调用 saveGithubFile 时，确保编码逻辑正确
+    const saveResult = await saveGithubFile(
+        'messages.json',
+        messages,
+        `添加新留言: ${author}`
+    );
+
+    if (saveResult.success) {
+        loadMessages();
+        showPetMessage("祝福提交成功！");
+        return true;
+    } else {
+        showPetMessage(`保存失败: ${saveResult.error}`);
+        return false;
+    }
+}
         
         // 删除照片
         async function deletePhoto(photoId, element) {
