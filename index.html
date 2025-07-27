@@ -1204,61 +1204,66 @@ async function saveGithubFile(filePath, content, message) {
                 return;
             }
             
-            photos.forEach(photo => {
-                const galleryItem = document.createElement('div');
-                galleryItem.className = 'gallery-item';
-                galleryItem.innerHTML = `
-                    <button class="delete-btn" data-id="${photo.id}">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                    <img src="${photo.src}" alt="${photo.caption}" class="gallery-img">
-                    <div class="gallery-caption">${photo.caption}</div>
-                `;
-                galleryContainer.appendChild(galleryItem);
-                
-                // 为删除按钮添加事件
-                galleryItem.querySelector('.delete-btn').addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    deletePhoto(photo.id, galleryItem);
-                });
+         // 原代码（可能出错）
+// <img src="${photo.src}" alt="${photo.caption}" class="gallery-img">
+
+// 修改为（强制 Base64 解码）
+photos.forEach(photo => {
+    const galleryItem = document.createElement('div');
+    galleryItem.className = 'gallery-item';
+    
+    // 关键：手动解码 Base64 内容
+    const decodedSrc = photo.src.replace('data:image/jpeg;base64,', '');
+    const decodedData = window.Base64.decode(decodedSrc);
+    const blob = new Blob([decodedData], { type: 'image/jpeg' });
+    const imageUrl = URL.createObjectURL(blob);
+    
+    galleryItem.innerHTML = `
+        <button class="delete-btn" data-id="${photo.id}">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+        <img src="${imageUrl}" alt="${photo.caption}" class="gallery-img">
+        <div class="gallery-caption">${photo.caption}</div>
+    `;
+    galleryContainer.appendChild(galleryItem);
+});
             });
         }
         
         // 加载留言
-        async function loadMessages() {
-            const guestbookContainer = document.getElementById('guestbook-container');
-            guestbookContainer.innerHTML = '<p style="text-align:center;">加载中...</p>';
-            
-            const result = await getGithubFileContent('messages.json');
-            
-            if (!result.success) {
-                guestbookContainer.innerHTML = `<p style="text-align:center;color:red;">加载留言失败: ${result.error}</p>`;
-                return;
-            }
-            
-            const messages = result.content || [];
-            guestbookContainer.innerHTML = '';
-            
-            if (messages.length === 0) {
-                guestbookContainer.innerHTML = '<p style="text-align:center;">还没有祝福，写下第一条祝福吧！</p>';
-                return;
-            }
-            
-            messages.forEach(message => {
-                const messageElement = document.createElement('div');
-                messageElement.className = 'message';
-                messageElement.innerHTML = `
-                    <div class="message-header">
-                        <span class="message-author"><i class="fas fa-user"></i> ${message.author}</span>
-                        <span class="message-date">${message.date}</span>
-                    </div>
-                    <div class="message-content">
-                        <p>${message.content}</p>
-                    </div>
-                `;
-                guestbookContainer.appendChild(messageElement);
-            });
-        }
+     async function loadMessages() {
+    const guestbookContainer = document.getElementById('guestbook-container');
+    guestbookContainer.innerHTML = '<p style="text-align:center;">加载中...</p>';
+    
+    const result = await getGithubFileContent('messages.json');
+    if (!result.success) {
+        guestbookContainer.innerHTML = `<p style="text-align:center;color:red;">加载留言失败: ${result.error}</p>`;
+        return;
+    }
+
+    const messages = result.content || [];
+    guestbookContainer.innerHTML = '';
+
+    // 逐个解码并渲染留言
+    messages.forEach(message => {
+        const decoder = new TextDecoder('utf-8');
+        const decodedContent = decoder.decode(window.atob(message.content));
+        
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message';
+        messageElement.innerHTML = `
+            <div class="message-header">
+                <span class="message-author"><i class="fas fa-user"></i> ${message.author}</span>
+                <span class="message-date">${message.date}</span>
+            </div>
+            <div class="message-content">
+                <p>${decodedContent}</p>
+            </div>
+        `;
+        guestbookContainer.appendChild(messageElement);
+    });
+}
+
         
         // 保存照片
         async function savePhoto(src, caption) {
@@ -1309,7 +1314,11 @@ async function saveGithubFile(filePath, content, message) {
     }
 }
         // 保存留言
-      async function saveMessage(author, content) {
+  async function saveMessage(author, content) {
+    // 编码时用 UTF-8 统一处理
+    const encoder = new TextEncoder();
+    const encodedContent = window.btoa(String.fromCharCode(...encoder.encode(content)));
+
     // 获取现有留言数据
     const result = await getGithubFileContent('messages.json');
     if (!result.success) {
@@ -1317,18 +1326,19 @@ async function saveGithubFile(filePath, content, message) {
         return false;
     }
 
-    // 修正数据结构：和前端显示的字段对齐
+    // 构造新留言（字段和前端渲染对齐）
     const messages = result.content || [];
     const newMessage = {
         id: Date.now(),
-        author: author,       // 对应前端的 name
-        date: new Date().toLocaleDateString(),
-        content: content      // 对应前端的 message
+        author: author,       // 对应前端显示的「您的姓名」
+        date: new Date().toLocaleDateString(), // 格式：2025/7/27
+        content: encodedContent // UTF-8 编码后的内容
     };
 
+    // 添加到留言列表
     messages.unshift(newMessage);
 
-    // 调用 saveGithubFile 时，确保编码逻辑正确
+    // 保存到 GitHub
     const saveResult = await saveGithubFile(
         'messages.json',
         messages,
@@ -1336,14 +1346,22 @@ async function saveGithubFile(filePath, content, message) {
     );
 
     if (saveResult.success) {
-        loadMessages();
-        showPetMessage("祝福提交成功！");
+        loadMessages(); // 刷新留言区
+        showPetMessage("感谢您的祝福！");
         return true;
     } else {
         showPetMessage(`保存失败: ${saveResult.error}`);
         return false;
     }
 }
+
+
+// 加载留言时解码
+messages.forEach(message => {
+    const decoder = new TextDecoder('utf-8');
+    const decodedContent = decoder.decode(window.atob(message.content));
+    // 渲染到页面...
+});
         
         // 删除照片
         async function deletePhoto(photoId, element) {
