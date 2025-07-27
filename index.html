@@ -1,7 +1,6 @@
-<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.6/base64.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-base64/3.7.6/base64.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>爱的永恒 | 婚礼纪念册</title>
@@ -84,7 +83,6 @@
             background: rgba(255, 255, 255, 0.2);
             display: inline-block;
             border-radius: 50px;
-            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             animation: fadeIn 2s ease;
@@ -108,7 +106,6 @@
             z-index: 1000;
             background: rgba(255, 255, 255, 0.95);
             box-shadow: var(--shadow);
-            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             transition: var(--transition);
         }
@@ -262,214 +259,6 @@
             border-radius: 2px;
         }
         
-        /* 相册样式 */
-        .gallery-section {
-            background-color: #f8f4f1;
-        }
-        
-        .gallery-controls {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .upload-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .upload-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .upload-btn i {
-            margin-right: 10px;
-        }
-        
-        .upload-btn:hover:not(:disabled) {
-            background: #a05a65;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(183, 110, 121, 0.3);
-        }
-        
-        .upload-info {
-            color: #777;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-        
-        .upload-container {
-            display: none;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 40px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .upload-container.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .photo-form-group {
-            margin-bottom: 25px;
-        }
-        
-        .photo-form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-        
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-        
-        .file-input-button {
-            background: #f1e9e5;
-            color: var(--dark);
-            border: 1px solid var(--secondary);
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 1rem;
-            display: inline-block;
-        }
-        
-        .preview-container {
-            margin-top: 20px;
-            min-height: 150px;
-            border: 2px dashed var(--secondary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            transition: var(--transition);
-        }
-        
-        .preview-container.has-image {
-            border-style: solid;
-        }
-        
-        .preview-image {
-            max-width: 100%;
-            max-height: 300px;
-            display: none;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .preview-image.show {
-            display: block;
-        }
-        
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .gallery-item {
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            height: 350px;
-            position: relative;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .gallery-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-        
-        .gallery-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        
-        .gallery-item:hover .gallery-img {
-            transform: scale(1.05);
-        }
-        
-        .gallery-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            color: white;
-            padding: 25px 20px 15px;
-            transform: translateY(100%);
-            transition: var(--transition);
-        }
-        
-        .gallery-item:hover .gallery-caption {
-            transform: translateY(0);
-        }
-        
-        .delete-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            color: #e74c3c;
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 5;
-            aria-label: "删除这张照片";
-        }
-        
-        .gallery-item:hover .delete-btn {
-            opacity: 1;
-        }
-        
-        .delete-btn:hover {
-            background: white;
-            transform: scale(1.1);
-        }
-        
         /* 留言区样式 */
         .guestbook-section {
             background: linear-gradient(135deg, #f9f4f0 0%, #f0e6e1 100%);
@@ -596,14 +385,7 @@
             margin: 30px auto 0;
         }
         
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .submit-btn:hover:not(:disabled) {
+        .submit-btn:hover {
             background: #a05a65;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(183, 110, 121, 0.3);
@@ -858,7 +640,6 @@
         /* 响应式设计 */
         @media (max-width: 992px) {
             .couple-names { font-size: 5rem; }
-            .gallery { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
         }
         
         @media (max-width: 768px) {
@@ -902,16 +683,15 @@
         <div class="nav-container">
             <a href="#" class="logo">曹江南 & 周可芹</a>
             <ul class="nav-links">
-                <li><a href="#gallery">幸福相册</a></li>
                 <li><a href="#guestbook">亲友祝福</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- 相册 -->
-    <section id="gallery" class="section gallery-section">
+    <!-- 留言区 -->
+    <section id="guestbook" class="section guestbook-section">
         <div class="container">
-            <h2 class="section-title">幸福时刻</h2>
+            <h2 class="section-title">亲友祝福</h2>
             
             <!-- GitHub配置区域 -->
             <div class="github-config">
@@ -929,53 +709,6 @@
                 <div class="status-indicator" id="config-status"></div>
             </div>
             
-            <!-- 上传控制区 -->
-            <div class="gallery-controls">
-                <button class="upload-btn" id="toggle-upload" disabled>
-                    <i class="fas fa-plus"></i> 上传照片
-                </button>
-                <p class="upload-info">上传你们的珍贵回忆，分享幸福瞬间</p>
-                
-                <!-- 上传表单 -->
-                <div class="upload-container" id="upload-container">
-                    <form id="photo-upload-form">
-                        <div class="photo-form-group">
-                            <label for="photo-file">选择照片</label>
-                            <div class="file-input-wrapper">
-                                <input type="file" id="photo-file" accept="image/*" required>
-                                <span class="file-input-button"><i class="fas fa-image"></i> 选择图片文件</span>
-                            </div>
-                            
-                            <!-- 预览区域 -->
-                            <div class="preview-container" id="preview-container">
-                                <img src="" alt="预览图" class="preview-image" id="preview-image">
-                                <span id="preview-placeholder">上传图片后将显示预览</span>
-                            </div>
-                        </div>
-                        
-                        <div class="photo-form-group">
-                            <label for="photo-caption">照片描述</label>
-                            <input type="text" id="photo-caption" class="form-control" placeholder="例如：婚礼现场的美好瞬间" required>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">
-                            <i class="fas fa-save"></i> 保存照片
-                        </button>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- 相册图片区 -->
-            <div class="gallery" id="gallery-container">
-                <!-- 图片将通过JavaScript动态加载 -->
-            </div>
-        </div>
-    </section>
-
-    <!-- 留言区 -->
-    <section id="guestbook" class="section guestbook-section">
-        <div class="container">
-            <h2 class="section-title">亲友祝福</h2>
             <div class="guestbook" id="guestbook-container">
                 <!-- 留言将通过JavaScript动态加载 -->
             </div>
@@ -990,7 +723,7 @@
                     <div class="form-group">
                         <textarea class="form-control" placeholder="写下您的祝福..." required></textarea>
                     </div>
-                    <button type="submit" class="submit-btn" disabled>提交祝福</button>
+                    <button type="submit" class="submit-btn">提交祝福</button>
                 </form>
             </div>
         </div>
@@ -1040,17 +773,9 @@
                 document.getElementById('github-owner').value = githubConfig.owner;
                 document.getElementById('github-repo').value = githubConfig.repo;
                 document.getElementById('github-token').value = githubConfig.token;
-                // 配置存在时启用按钮
-                enableActionButtons();
                 return true;
             }
             return false;
-        }
-        
-        // 启用上传和留言按钮
-        function enableActionButtons() {
-            document.getElementById('toggle-upload').disabled = false;
-            document.querySelector('#message-form .submit-btn').disabled = false;
         }
         
         // 保存GitHub配置
@@ -1071,10 +796,7 @@
             testGithubConnection().then(success => {
                 if (success) {
                     showStatus('配置保存成功！', 'success');
-                    // 启用按钮
-                    enableActionButtons();
-                    // 尝试加载数据
-                    loadPhotos();
+                    // 尝试加载留言数据
                     loadMessages();
                     showPetMessage("GitHub配置成功！");
                 } else {
@@ -1168,18 +890,18 @@
         
         // 获取文件内容
         async function getGithubFileContent(filePath) {
+            const result = await githubApiRequest(`contents/${filePath}`);
+            
+            if (!result.success) {
+                return { success: false, error: result.error };
+            }
+            
+            // 如果文件不存在，返回空数组
+            if (!result.data) {
+                return { success: true, content: [] };
+            }
+            
             try {
-                const result = await githubApiRequest(`contents/${filePath}`);
-                
-                if (!result.success) {
-                    return { success: false, error: result.error };
-                }
-                
-                // 如果文件不存在，返回空数组
-                if (!result.data) {
-                    return { success: true, content: [] };
-                }
-                
                 // 解码base64内容
                 const content = atob(result.data.content);
                 return { success: true, content: JSON.parse(content) };
@@ -1210,53 +932,6 @@
             return await githubApiRequest(`contents/${filePath}`, 'PUT', data);
         }
         
-        // 加载照片
-        async function loadPhotos() {
-            const galleryContainer = document.getElementById('gallery-container');
-            galleryContainer.innerHTML = '<p style="text-align:center;grid-column:1/-1;">加载中...</p>';
-            
-            const result = await getGithubFileContent('photos.json');
-            
-            if (!result.success) {
-                galleryContainer.innerHTML = `<p style="text-align:center;grid-column:1/-1;color:red;">加载照片失败: ${result.error}</p>`;
-                return;
-            }
-            
-            const photos = result.content || [];
-            galleryContainer.innerHTML = '';
-            
-            if (photos.length === 0) {
-                galleryContainer.innerHTML = '<p style="text-align:center;grid-column:1/-1;">还没有照片，上传第一张照片吧！</p>';
-                return;
-            }
-            
-            photos.forEach(photo => {
-                const galleryItem = document.createElement('div');
-                galleryItem.className = 'gallery-item';
-                
-                // 关键：手动解码 Base64 内容
-                const decodedSrc = photo.src.replace('data:image/jpeg;base64,', '');
-                const decodedData = window.Base64.decode(decodedSrc);
-                const blob = new Blob([decodedData], { type: 'image/jpeg' });
-                const imageUrl = URL.createObjectURL(blob);
-                
-                galleryItem.innerHTML = `
-                    <button class="delete-btn" data-id="${photo.id}" aria-label="删除这张照片">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                    <img src="${imageUrl}" alt="${photo.caption}" class="gallery-img">
-                    <div class="gallery-caption">${photo.caption}</div>
-                `;
-                galleryContainer.appendChild(galleryItem);
-                
-                // 绑定删除事件
-                galleryItem.querySelector('.delete-btn').addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    deletePhoto(photo.id, galleryItem);
-                });
-            });
-        }
-        
         // 加载留言
         async function loadMessages() {
             const guestbookContainer = document.getElementById('guestbook-container');
@@ -1271,10 +946,15 @@
             const messages = result.content || [];
             guestbookContainer.innerHTML = '';
 
+            if (messages.length === 0) {
+                guestbookContainer.innerHTML = '<p style="text-align:center;">还没有祝福，写下第一条祝福吧！</p>';
+                return;
+            }
+
             // 逐个解码并渲染留言
             messages.forEach(message => {
-                // 兼容所有浏览器的解码方式
-                const decodedContent = decodeURIComponent(escape(window.atob(message.content)));
+                const decoder = new TextDecoder('utf-8');
+                const decodedContent = decoder.decode(window.atob(message.content));
                 
                 const messageElement = document.createElement('div');
                 messageElement.className = 'message';
@@ -1291,59 +971,11 @@
             });
         }
         
-        // 保存照片
-        async function savePhoto(src, caption) {
-            try {
-                // 提取图片的Base64数据（去除前缀部分）
-                const base64Data = src.split(',')[1];
-                
-                // 使用js-base64库处理编码，支持所有字符
-                const safeBase64 = window.Base64.encode(base64Data);
-                
-                // 获取现有照片数据
-                const result = await getGithubFileContent('photos.json');
-                if (!result.success) {
-                    showPetMessage(`保存失败: ${result.error}`);
-                    return false;
-                }
-
-                // 创建新照片对象
-                const photos = result.content || [];
-                const newPhoto = {
-                    id: Date.now(),
-                    src: `data:image/jpeg;base64,${safeBase64}`, // 使用处理后的编码
-                    caption: caption,
-                    date: new Date().toLocaleDateString()
-                };
-
-                // 添加到数组并保存
-                photos.unshift(newPhoto);
-
-                const saveResult = await saveGithubFile(
-                    'photos.json',
-                    photos,
-                    `添加新照片: ${caption}`
-                );
-
-                if (saveResult.success) {
-                    loadPhotos();
-                    showPetMessage("照片上传成功！");
-                    return true;
-                } else {
-                    showPetMessage(`保存失败: ${saveResult.error}`);
-                    return false;
-                }
-            } catch (error) {
-                console.error('照片处理失败:', error);
-                showPetMessage(`上传失败: 图片编码错误`);
-                return false;
-            }
-        }
-        
         // 保存留言
         async function saveMessage(author, content) {
-            // 兼容所有浏览器的编码方式
-            const encodedContent = window.btoa(unescape(encodeURIComponent(content)));
+            // 编码时用 UTF-8 统一处理
+            const encoder = new TextEncoder();
+            const encodedContent = window.btoa(String.fromCharCode(...encoder.encode(content)));
 
             // 获取现有留言数据
             const result = await getGithubFileContent('messages.json');
@@ -1352,7 +984,7 @@
                 return false;
             }
 
-            // 构造新留言（字段和前端渲染对齐）
+            // 构造新留言
             const messages = result.content || [];
             const newMessage = {
                 id: Date.now(),
@@ -1379,42 +1011,6 @@
                 showPetMessage(`保存失败: ${saveResult.error}`);
                 return false;
             }
-        }
-        
-        // 删除照片
-        async function deletePhoto(photoId, element) {
-            if (!confirm('确定要删除这张照片吗？')) {
-                return;
-            }
-            
-            // 添加删除动画
-            element.style.transform = 'scale(0)';
-            element.style.opacity = '0';
-            
-            setTimeout(async () => {
-                const result = await getGithubFileContent('photos.json');
-                
-                if (!result.success) {
-                    showPetMessage(`删除失败: ${result.error}`);
-                    return;
-                }
-                
-                let photos = result.content || [];
-                photos = photos.filter(photo => photo.id !== photoId);
-                
-                const saveResult = await saveGithubFile(
-                    'photos.json',
-                    photos,
-                    `删除照片: ${photoId}`
-                );
-                
-                if (saveResult.success) {
-                    loadPhotos();
-                    showPetMessage("照片已删除~");
-                } else {
-                    showPetMessage(`删除失败: ${saveResult.error}`);
-                }
-            }, 300);
         }
         
         // 显示宠物消息
@@ -1451,9 +1047,9 @@
             // 保存配置按钮事件
             document.getElementById('save-config').addEventListener('click', saveGithubConfig);
             
-            // 滚动到相册
+            // 滚动到留言区
             document.getElementById('scroll-down').addEventListener('click', function() {
-                document.getElementById('gallery').scrollIntoView({
+                document.getElementById('guestbook').scrollIntoView({
                     behavior: 'smooth'
                 });
             });
@@ -1467,85 +1063,6 @@
                         behavior: 'smooth'
                     });
                 });
-            });
-            
-            // 照片上传功能
-            const toggleUploadBtn = document.getElementById('toggle-upload');
-            const uploadContainer = document.getElementById('upload-container');
-            const photoFileInput = document.getElementById('photo-file');
-            const previewImage = document.getElementById('preview-image');
-            const previewContainer = document.getElementById('preview-container');
-            const previewPlaceholder = document.getElementById('preview-placeholder');
-            const photoUploadForm = document.getElementById('photo-upload-form');
-            
-            // 切换上传表单显示/隐藏
-            toggleUploadBtn.addEventListener('click', function() {
-                // 检查是否已配置GitHub
-                if (!githubConfig.owner || !githubConfig.repo || !githubConfig.token) {
-                    showPetMessage("请先配置GitHub信息！");
-                    return;
-                }
-                
-                uploadContainer.classList.toggle('active');
-                
-                if (uploadContainer.classList.contains('active')) {
-                    toggleUploadBtn.innerHTML = '<i class="fas fa-times"></i> 取消上传';
-                    toggleUploadBtn.style.background = '#e74c3c';
-                } else {
-                    toggleUploadBtn.innerHTML = '<i class="fas fa-plus"></i> 上传照片';
-                    toggleUploadBtn.style.background = '';
-                    // 重置表单
-                    photoUploadForm.reset();
-                    previewImage.classList.remove('show');
-                    previewImage.src = '';
-                    previewContainer.classList.remove('has-image');
-                    previewPlaceholder.style.display = 'block';
-                }
-            });
-            
-            // 图片预览
-            photoFileInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        previewImage.src = event.target.result;
-                        previewImage.classList.add('show');
-                        previewContainer.classList.add('has-image');
-                        previewPlaceholder.style.display = 'none';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-            
-            // 提交照片表单
-            photoUploadForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // 检查是否已配置GitHub
-                if (!githubConfig.owner || !githubConfig.repo || !githubConfig.token) {
-                    showPetMessage("请先配置GitHub信息！");
-                    return;
-                }
-                
-                const caption = document.getElementById('photo-caption').value;
-                const imageSrc = previewImage.src;
-                
-                if (imageSrc && caption) {
-                    const success = await savePhoto(imageSrc, caption);
-                    
-                    if (success) {
-                        // 重置表单
-                        photoUploadForm.reset();
-                        previewImage.classList.remove('show');
-                        previewImage.src = '';
-                        previewContainer.classList.remove('has-image');
-                        previewPlaceholder.style.display = 'block';
-                        uploadContainer.classList.remove('active');
-                        toggleUploadBtn.innerHTML = '<i class="fas fa-plus"></i> 上传照片';
-                        toggleUploadBtn.style.background = '';
-                    }
-                }
             });
             
             // 提交留言表单
@@ -1582,7 +1099,6 @@
                     "永结同心，白头偕老！",
                     "新婚快乐，幸福美满！",
                     "愿爱洋溢在你们的生活中！",
-                    "记得上传你们的甜蜜瞬间哦~",
                     "喵~今天也是幸福的一天！"
                 ];
                 
@@ -1590,41 +1106,41 @@
                 showPetMessage(randomMsg);
             });
             
-            // 宠物跟随鼠标（优化性能）
+            // 宠物跟随鼠标
             let mouseX = window.innerWidth / 2;
             let mouseY = window.innerHeight / 2;
-            let followTimer = null;
             
             document.addEventListener('mousemove', function(e) {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
-                
-                if (followTimer) return;
-                followTimer = setTimeout(() => {
-                    const petRect = petContainer.getBoundingClientRect();
-                    const petX = petRect.left + petRect.width / 2;
-                    const petY = petRect.top + petRect.height / 2;
-                    
-                    const diffX = mouseX - petX;
-                    const diffY = mouseY - petY;
-                    const distance = Math.sqrt(diffX * diffX + diffY * diffY);
-                    
-                    // 只在一定距离外跟随
-                    if (distance > 150) {
-                        const moveX = diffX * 0.03;
-                        const moveY = diffY * 0.03;
-                        
-                        // 移动宠物
-                        petContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                        
-                        // 调整尾巴方向
-                        const tail = document.querySelector('.pet-tail');
-                        tail.style.transform = `rotate(${diffX > 0 ? '20deg' : '-20deg'})`;
-                    }
-                    
-                    followTimer = null;
-                }, 50); // 降低更新频率，优化性能
             });
+            
+            function followMouse() {
+                const petRect = petContainer.getBoundingClientRect();
+                const petX = petRect.left + petRect.width / 2;
+                const petY = petRect.top + petRect.height / 2;
+                
+                const diffX = mouseX - petX;
+                const diffY = mouseY - petY;
+                const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+                
+                // 只在一定距离外跟随
+                if (distance > 150) {
+                    const moveX = diffX * 0.03;
+                    const moveY = diffY * 0.03;
+                    
+                    // 移动宠物
+                    petContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    
+                    // 调整尾巴方向
+                    const tail = document.querySelector('.pet-tail');
+                    tail.style.transform = `rotate(${diffX > 0 ? '20deg' : '-20deg'})`;
+                }
+                
+                requestAnimationFrame(followMouse);
+            }
+            
+            followMouse();
         });
     </script>
 </body>
