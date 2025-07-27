@@ -259,12 +259,12 @@
                 border-radius: 2px;
             }
 
-        /* 视频区样式 */
-        .video-section {
+        /* 音乐区样式（替换原视频区） */
+        .music-section {
             background: linear-gradient(135deg, #f0e6e1 0%, #f9f4f0 100%);
         }
 
-        .video-container {
+        .music-container {
             background: white;
             max-width: 1000px;
             margin: 0 auto;
@@ -274,51 +274,84 @@
             text-align: center;
         }
 
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 比例 */
-            margin-bottom: 30px;
-            background: #f0f0f0;
-            border-radius: 10px;
+        .music-cover {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
         }
 
-        .video-player {
-            position: absolute;
-            top: 0;
-            left: 0;
+            .music-cover img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                animation: rotate 20s linear infinite;
+                animation-play-state: paused;
+            }
+
+            .music-cover::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 30px;
+                height: 30px;
+                background: white;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 1;
+            }
+
+        .audio-player {
             width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 10px;
+            margin: 20px 0;
         }
 
-        .video-controls {
+        .music-info {
+            margin-bottom: 20px;
+        }
+
+        .music-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .music-artist {
+            color: var(--dark);
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .music-controls {
             margin-top: 20px;
         }
 
-        .video-file-input {
-            display: none;
-        }
-
-        .custom-file-upload {
+        .play-button {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: var(--transition);
-            margin-right: 10px;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-            .custom-file-upload:hover {
+            .play-button:hover {
                 background: #a05a65;
+                transform: scale(1.05);
             }
 
-        .video-status {
+        .music-status {
             margin-top: 15px;
             font-style: italic;
             color: #666;
@@ -768,6 +801,16 @@
             }
         }
 
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         /* 响应式设计 */
         @media (max-width: 992px) {
             .couple-names {
@@ -796,7 +839,7 @@
                 display: none;
             }
 
-            .video-container {
+            .music-container {
                 padding: 20px;
             }
         }
@@ -822,19 +865,13 @@
                 bottom: 10px;
             }
 
-            .video-controls {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+            .music-title {
+                font-size: 1.5rem;
             }
 
-            .custom-file-upload {
-                margin-bottom: 10px;
-                width: 100%;
-            }
-
-            .video-btn {
-                width: 100%;
+            .music-cover {
+                width: 160px;
+                height: 160px;
             }
         }
     </style>
@@ -857,38 +894,38 @@
         <div class="nav-container">
             <a href="#" class="logo">曹江南 & 周可芹</a>
             <ul class="nav-links">
-                <li><a href="#videos">婚礼视频</a></li>
+                <li><a href="#music">婚礼音乐</a></li>
                 <li><a href="#guestbook">亲友祝福</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- 视频区 -->
-    <section id="videos" class="section video-section">
+    <!-- 音乐区（替换原视频区） -->
+    <section id="music" class="section music-section">
         <div class="container">
-            <h2 class="section-title">婚礼视频</h2>
+            <h2 class="section-title">婚礼音乐</h2>
 
-            <div class="video-container">
-           <div class="video-wrapper">
-  <video controls poster="https://picsum.photos/800/450">
-    <!-- 替换成实际视频链接，比如从 GitHub 或服务器获取的地址 -->
-    <source src="your-video.mp4" type="video/mp4">  
-    <source src="your-video.webm" type="video/webm">  
-    <source src="your-video.ogg" type="video/ogg">  
-    您的浏览器不支持视频播放，请更换浏览器或设备。
-  </video>
-</div>
+            <div class="music-container">
+                <div class="music-cover">
+                    <img src="https://picsum.photos/id/1062/300/300" alt="婚礼音乐封面">
+                </div>
 
-                <div class="video-controls">
-                    <label for="video-file-upload" class="custom-file-upload">
-                        <i class="fas fa-upload"></i> 上传视频
-                    </label>
-                    <input id="video-file-upload" type="file" class="video-file-input" accept="video/*">
+                <div class="music-info">
+                    <h3 class="music-title">Could This Be Love</h3>
+                    <p class="music-artist">Victoria Acosta（婚礼常用浪漫歌曲）</p>
+                </div>
 
-                    <button class="save-config video-btn" id="load-video">从GitHub加载视频</button>
-                    <button class="save-config video-btn" id="save-video" style="display:none;">保存视频到GitHub</button>
+                <!-- 婚礼浪漫歌曲 - 直接使用网上链接 -->
+                <audio id="wedding-audio" class="audio-player" controls>
+                    <source src="https://m10.music.126.net/20250728011151/e07b38426bf3086ef2b6fa252eb412fe/ymusic/0162/8e59/be5d/811dcac9e8f00a2d053150ff5f624135.mp3?vuutv=vIbGpTGHyEDwedQJspgNWB3hRJgBRgneUroQDXERrOGElVd4mYmqCaAIFg052RI9Uz3I0JkKoWz84I3cQZHzV1vvTPxpbv13LwVSYbjQx5A=" type="audio/mpeg">
+                    您的浏览器不支持音频播放
+                </audio>
 
-                    <div class="video-status" id="video-status">请上传视频或从GitHub加载</div>
+                <div class="music-controls">
+                    <button class="play-button" id="toggle-play">
+                        <i class="fas fa-play" id="play-icon"></i>
+                    </button>
+                    <div class="music-status" id="music-status">点击播放浪漫婚礼音乐</div>
                 </div>
             </div>
         </div>
@@ -1006,9 +1043,6 @@
             token: ''
         };
 
-        // 视频文件信息
-        let videoFile = null;
-
         // 检查是否有保存的配置
         function loadGithubConfig() {
             const savedConfig = localStorage.getItem('githubConfig');
@@ -1067,13 +1101,6 @@
             setTimeout(() => {
                 statusElement.className = 'status-indicator';
             }, 5000);
-        }
-
-        // 更新视频状态信息
-        function updateVideoStatus(message, isError = false) {
-            const statusElement = document.getElementById('video-status');
-            statusElement.textContent = message;
-            statusElement.style.color = isError ? '#a94442' : '#666';
         }
 
         // 测试GitHub连接
@@ -1162,7 +1189,7 @@
             let base64Data;
 
             if (isBinary) {
-                // 对于二进制文件（如视频），直接使用已编码的base64
+                // 对于二进制文件，直接使用已编码的base64
                 base64Data = content;
             } else {
                 // 对于文本文件，先序列化为JSON再编码
@@ -1181,181 +1208,6 @@
             }
 
             return await githubApiRequest(`contents/${filePath}`, 'PUT', data);
-        }
-
-        // 从GitHub加载视频
-        async function loadVideoFromGithub() {
-            if (!githubConfig.owner || !githubConfig.repo || !githubConfig.token) {
-                updateVideoStatus('请先配置GitHub信息', true);
-                return false;
-            }
-
-            updateVideoStatus('正在从GitHub加载视频...');
-
-            try {
-                // 先获取视频元数据
-                const videoMetaResult = await getGithubFileContent('video_metadata.json');
-                if (!videoMetaResult.success) {
-                    updateVideoStatus(`加载视频元数据失败: ${videoMetaResult.error}`, true);
-                    return false;
-                }
-
-                if (!videoMetaResult.content) {
-                    updateVideoStatus('GitHub中未找到视频，请先上传', true);
-                    return false;
-                }
-
-                // 解析元数据
-                const metaContent = JSON.parse(atob(videoMetaResult.content.content));
-                const videoFileName = metaContent.filename;
-
-                // 获取视频文件
-                const videoResult = await getGithubFileContent(videoFileName);
-                if (!videoResult.success) {
-                    updateVideoStatus(`加载视频失败: ${videoResult.error}`, true);
-                    return false;
-                }
-
-                if (!videoResult.content) {
-                    updateVideoStatus('视频文件不存在', true);
-                    return false;
-                }
-
-                // 创建视频URL并设置给视频元素
-                const videoElement = document.getElementById('wedding-video');
-                const videoUrl = `data:${metaContent.mimeType};base64,${videoResult.content.content}`;
-                videoElement.src = videoUrl;
-
-                updateVideoStatus(`已加载视频: ${metaContent.originalName}`);
-                showPetMessage("视频加载成功！");
-                return true;
-            } catch (error) {
-                console.error('加载视频时出错:', error);
-                updateVideoStatus(`加载视频时出错: ${error.message}`, true);
-                return false;
-            }
-        }
-
-        // 将视频保存到GitHub
-        async function saveVideoToGithub() {
-            if (!videoFile) {
-                updateVideoStatus('请先选择视频文件', true);
-                return false;
-            }
-
-            if (!githubConfig.owner || !githubConfig.repo || !githubConfig.token) {
-                updateVideoStatus('请先配置GitHub信息', true);
-                return false;
-            }
-
-            updateVideoStatus('正在处理视频并上传到GitHub...');
-
-            try {
-                // 创建唯一的文件名
-                const timestamp = new Date().getTime();
-                const fileExtension = videoFile.name.split('.').pop();
-                const videoFileName = `wedding_video_${timestamp}.${fileExtension}`;
-
-                // 读取并编码视频文件
-                const reader = new FileReader();
-
-                return new Promise((resolve) => {
-                    reader.onload = async function (event) {
-                        try {
-                            // 提取base64数据部分（去掉data:...前缀）
-                            const base64Data = event.target.result.split(',')[1];
-
-                            // 先保存视频文件
-                            const videoSaveResult = await saveGithubFile(
-                                videoFileName,
-                                base64Data,
-                                `上传婚礼视频: ${videoFile.name}`,
-                                true // 标记为二进制文件
-                            );
-
-                            if (!videoSaveResult.success) {
-                                updateVideoStatus(`保存视频失败: ${videoSaveResult.error}`, true);
-                                resolve(false);
-                                return;
-                            }
-
-                            // 保存视频元数据
-                            const metadata = {
-                                filename: videoFileName,
-                                originalName: videoFile.name,
-                                mimeType: videoFile.type,
-                                size: videoFile.size,
-                                uploadedAt: new Date().toISOString()
-                            };
-
-                            const metaSaveResult = await saveGithubFile(
-                                'video_metadata.json',
-                                metadata,
-                                `更新视频元数据: ${videoFile.name}`
-                            );
-
-                            if (metaSaveResult.success) {
-                                updateVideoStatus(`视频已成功保存到GitHub: ${videoFile.name}`);
-                                showPetMessage("视频上传成功！");
-                                resolve(true);
-                            } else {
-                                updateVideoStatus(`保存视频元数据失败: ${metaSaveResult.error}`, true);
-                                resolve(false);
-                            }
-                        } catch (error) {
-                            console.error('保存视频时出错:', error);
-                            updateVideoStatus(`保存视频时出错: ${error.message}`, true);
-                            resolve(false);
-                        }
-                    };
-
-                    // 读取视频文件并转换为base64
-                    reader.readAsDataURL(videoFile);
-                });
-            } catch (error) {
-                console.error('处理视频时出错:', error);
-                updateVideoStatus(`处理视频时出错: ${error.message}`, true);
-                return false;
-            }
-        }
-
-        // 处理视频文件选择
-        function handleVideoFileSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            // 检查文件类型
-            if (!file.type.startsWith('video/')) {
-                updateVideoStatus('请选择视频文件', true);
-                return;
-            }
-
-            // 检查文件大小（限制50MB以内）
-            const maxSize = 50 * 1024 * 1024; // 50MB
-            if (file.size > maxSize) {
-                updateVideoStatus('视频文件过大，请选择50MB以内的视频', true);
-                return;
-            }
-
-            videoFile = file;
-
-            // 在页面上预览视频
-            const videoElement = document.getElementById('wedding-video');
-            const videoUrl = URL.createObjectURL(file);
-            videoElement.src = videoUrl;
-
-            updateVideoStatus(`已选择视频: ${file.name} (${formatFileSize(file.size)})`);
-            document.getElementById('save-video').style.display = 'inline-block';
-            showPetMessage("视频已准备好，点击保存到GitHub吧！");
-        }
-
-        // 格式化文件大小
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
         // 加载留言
@@ -1397,14 +1249,14 @@
                 const messageElement = document.createElement('div');
                 messageElement.className = 'message';
                 messageElement.innerHTML = `
-                        <div class="message-header">
-                            <span class="message-author"><i class="fas fa-user"></i> ${decodedAuthor}</span>
-                            <span class="message-date">${message.date}</span>
-                        </div>
-                        <div class="message-content">
-                            <p>${decodedContent}</p>
-                        </div>
-                    `;
+                            <div class="message-header">
+                                <span class="message-author"><i class="fas fa-user"></i> ${decodedAuthor}</span>
+                                <span class="message-date">${message.date}</span>
+                            </div>
+                            <div class="message-content">
+                                <p>${decodedContent}</p>
+                            </div>
+                        `;
                 guestbookContainer.appendChild(messageElement);
             });
         }
@@ -1488,20 +1340,68 @@
 
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function () {
+            // 音乐播放控制
+            const audioElement = document.getElementById('wedding-audio');
+            const playButton = document.getElementById('toggle-play');
+            const playIcon = document.getElementById('play-icon');
+            const musicStatus = document.getElementById('music-status');
+            const albumCover = document.querySelector('.music-cover img');
+
+            // 播放/暂停切换
+            playButton.addEventListener('click', function () {
+                if (audioElement.paused) {
+                    audioElement.play().then(() => {
+                        playIcon.classList.remove('fa-play');
+                        playIcon.classList.add('fa-pause');
+                        albumCover.style.animationPlayState = 'running';
+                        musicStatus.textContent = '正在播放：Could This Be Love';
+                        showPetMessage("祝新人永浴爱河！");
+                    }).catch(error => {
+                        console.error('播放失败:', error);
+                        musicStatus.textContent = '请点击播放器的播放按钮';
+                        showPetMessage("需要手动点击播放哦~");
+                    });
+                } else {
+                    audioElement.pause();
+                    playIcon.classList.remove('fa-pause');
+                    playIcon.classList.add('fa-play');
+                    albumCover.style.animationPlayState = 'paused';
+                    musicStatus.textContent = '已暂停播放';
+                }
+            });
+
+            // 音频结束时重置状态
+            audioElement.addEventListener('ended', function () {
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                albumCover.style.animationPlayState = 'paused';
+                musicStatus.textContent = '音乐播放完毕，可重新点击播放';
+            });
+
+            // 点击播放器时同步更新按钮状态
+            audioElement.addEventListener('play', function () {
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+                albumCover.style.animationPlayState = 'running';
+                musicStatus.textContent = '正在播放：Could This Be Love';
+            });
+
+            audioElement.addEventListener('pause', function () {
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                albumCover.style.animationPlayState = 'paused';
+                musicStatus.textContent = '已暂停播放';
+            });
+
             // 加载保存的GitHub配置
             loadGithubConfig();
 
             // 保存配置按钮事件
             document.getElementById('save-config').addEventListener('click', saveGithubConfig);
 
-            // 视频相关事件
-            document.getElementById('video-file-upload').addEventListener('change', handleVideoFileSelect);
-            document.getElementById('load-video').addEventListener('click', loadVideoFromGithub);
-            document.getElementById('save-video').addEventListener('click', saveVideoToGithub);
-
-            // 滚动到留言区
+            // 滚动到音乐区
             document.getElementById('scroll-down').addEventListener('click', function () {
-                document.getElementById('videos').scrollIntoView({
+                document.getElementById('music').scrollIntoView({
                     behavior: 'smooth'
                 });
             });
@@ -1552,7 +1452,7 @@
                     "新婚快乐，幸福美满！",
                     "愿爱洋溢在你们的生活中！",
                     "喵~今天也是幸福的一天！",
-                    "可以上传婚礼视频哦！"
+                    "好听的婚礼音乐哦~"
                 ];
 
                 const randomMsg = messages[Math.floor(Math.random() * messages.length)];
