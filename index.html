@@ -916,11 +916,12 @@
                 </div>
 
                 <!-- 婚礼浪漫歌曲 - 直接使用网上链接 -->
-                <audio id="wedding-audio" class="audio-player" controls>
-                    <source src="https://github.com/wuruoling/love/blob/main/wedding_audio_1753632532063.mp3" type="audio/mpeg">
-                    您的浏览器不支持音频播放
-                </audio>
-
+           <!-- 替换原来的 <audio> 部分 -->
+<audio id="wedding-audio" class="audio-player" controls>
+    <!-- 直接引用本地音频文件（根据左侧文件路径调整） -->
+    <source src="wedding_audio_1753632532063.mp3" type="audio/mpeg">
+    您的浏览器不支持音频播放
+<think>
                 <div class="music-controls">
                     <button class="play-button" id="toggle-play">
                         <i class="fas fa-play" id="play-icon"></i>
